@@ -38,6 +38,7 @@ dependencies:
   dio: ^5.8.0+1
   pretty_dio_logger: ^1.4.0
   intl: ^0.20.2
+  webview_flutter: ^4.13.0
 
 dev_dependencies:
   flutter_test:
