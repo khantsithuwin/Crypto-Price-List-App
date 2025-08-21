@@ -1,13 +1,14 @@
 import 'package:crypto_price_list/pages/price_list_detail_page.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 import '../const/indicator_color.dart';
 import '../const/number_formatter.dart';
 import '../data/models/price_model.dart';
 import 'price_indicator.dart';
 
-class PriceItems extends StatelessWidget {
-  const PriceItems({super.key, required this.priceModel});
+class PriceItemsMobileWidget extends StatelessWidget {
+  const PriceItemsMobileWidget({super.key, required this.priceModel});
 
   final PriceModel priceModel;
 
@@ -18,14 +19,9 @@ class PriceItems extends StatelessWidget {
       onTap: () {
         String? symbol = priceModel.symbol;
         if (symbol != null) {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (_) => PriceListDetailPage(
-                symbol: symbol,
-                name: priceModel.name ?? '',
-              ),
-            ),
+          context.pushNamed(
+            "details",
+            queryParameters: {"symbol": symbol, "name": priceModel.name ?? ""},
           );
         }
       },
@@ -93,6 +89,7 @@ class PriceItems extends StatelessWidget {
                       ),
                       Text(
                         (priceModel.priceChangePercentage1hInCurrency ?? 0)
+                            .abs()
                             .toStringAsFixed(1),
                         style: TextStyle(
                           color: indicatorColor(
@@ -109,6 +106,7 @@ class PriceItems extends StatelessWidget {
                       ),
                       Text(
                         (priceModel.priceChangePercentage24hInCurrency ?? 0)
+                            .abs()
                             .toStringAsFixed(1),
                         style: TextStyle(
                           color: indicatorColor(
@@ -125,6 +123,7 @@ class PriceItems extends StatelessWidget {
                       ),
                       Text(
                         (priceModel.priceChangePercentage7dInCurrency ?? 0)
+                            .abs()
                             .toStringAsFixed(1),
                         style: TextStyle(
                           color: indicatorColor(

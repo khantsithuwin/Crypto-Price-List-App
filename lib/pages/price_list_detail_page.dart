@@ -38,13 +38,17 @@ class _PriceListDetailPageState extends ConsumerState<PriceListDetailPage> {
 
   @override
   Widget build(BuildContext context) {
+    double height = MediaQuery.of(context).size.height;
     String link =
         '${UrlConst.chartLink}${widget.symbol.toUpperCase()}USD${UrlConst.chartQueryLink}';
     return Scaffold(
       appBar: AppBar(title: Text(widget.name)),
       body: Column(
         children: [
-          SizedBox(height: 400, child: IframeViewer(link: link)),
+          SizedBox(
+            height: height * 0.4,
+            child: IframeViewer(link: link),
+          ),
           Consumer(
             builder: (context, ref, child) {
               PriceDetailStateModel model = ref.watch(_detailProvider);
@@ -53,20 +57,21 @@ class _PriceListDetailPageState extends ConsumerState<PriceListDetailPage> {
                 children: [
                   PriceDetailItems(
                     title: "CurrentPrice",
-                    value: model.currentPrice.toString(),
+                    value: model.currentPrice?.toString() ?? '-',
                   ),
                   PriceDetailItems(
                     title: "BuyPrice",
-                    value: model.currentPrice.toString(),
+                    value: model.currentPrice?.toString() ?? '-',
                   ),
                   PriceDetailItems(
                     title: "SellPrice",
-                    value: model.currentPrice.toString(),
+                    value: model.currentPrice?.toString() ?? '-',
                   ),
                   PriceDetailItems(
                     title: "Updated at",
-                    value:
-                        "${date?.day},${date?.month},${date?.year} ${date?.hour}:${date?.minute}",
+                    value: date == null
+                        ? "-"
+                        : "${date.day},${date.month},${date.year} ${date.hour}:${date.minute}:${date.second}",
                   ),
                 ],
               );
