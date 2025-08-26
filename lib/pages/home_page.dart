@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+  const HomePage({super.key, required this.shell});
+
+  final StatefulNavigationShell shell;
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -12,17 +14,19 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
+    StatefulNavigationShell shell = widget.shell;
     double width = MediaQuery.of(context).size.width;
-    GoRouterState state = GoRouter.of(context).state;
-    String path = state.uri.path;
     return Scaffold(
-      appBar: AppBar(title: Text("Home")),
       body: Column(
         children: [
           if (width >= 600)
             DefaultTabController(
+              initialIndex: shell.currentIndex,
               length: 4,
               child: TabBar(
+                onTap: (index) {
+                  shell.goBranch(index);
+                },
                 tabs: [
                   Tab(icon: Icon(Icons.home), text: "Home"),
                   Tab(icon: Icon(Icons.favorite), text: "Favourite"),
@@ -31,11 +35,15 @@ class _HomePageState extends State<HomePage> {
                 ],
               ),
             ),
-          if (path == "/list") PriceListPage(),
+          Expanded(child: shell),
         ],
       ),
       bottomNavigationBar: width < 600
           ? NavigationBar(
+              selectedIndex: shell.currentIndex,
+              onDestinationSelected: (index) {
+                shell.goBranch(index);
+              },
               destinations: [
                 NavigationDestination(icon: Icon(Icons.home), label: "Home"),
                 NavigationDestination(

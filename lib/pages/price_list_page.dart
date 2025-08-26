@@ -130,85 +130,97 @@ class _PriceListPageState extends ConsumerState<PriceListPage> {
               stateModel.success == true &&
               width >= 600)
             Expanded(
-              child: Column(
-                children: [
-                  Row(
+              child: SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: SizedBox(
+                  width: 1200,
+                  child: Column(
                     children: [
-                      Container(
-                        padding: EdgeInsets.all(8.0),
-                        margin: EdgeInsets.only(left: 8.0),
-                        width: 150,
-                        decoration: BoxDecoration(border: Border.all()),
-                        child: Text("Name"),
+                      Row(
+                        children: [
+                          Container(
+                            padding: EdgeInsets.all(8.0),
+                            margin: EdgeInsets.only(left: 8.0),
+                            width: 150,
+                            decoration: BoxDecoration(border: Border.all()),
+                            child: Text("Name"),
+                          ),
+                          Container(
+                            padding: EdgeInsets.all(8.0),
+                            width: 100,
+                            decoration: BoxDecoration(border: Border.all()),
+                            child: Text("Symbol"),
+                          ),
+                          Container(
+                            alignment: Alignment.centerRight,
+                            padding: EdgeInsets.all(8.0),
+                            width: 150,
+                            decoration: BoxDecoration(border: Border.all()),
+                            child: Text("Current Price"),
+                          ),
+                          Container(
+                            padding: EdgeInsets.all(8.0),
+                            width: 100,
+                            decoration: BoxDecoration(border: Border.all()),
+                            child: Text("1h Change"),
+                          ),
+                          Container(
+                            padding: EdgeInsets.all(8.0),
+                            width: 100,
+                            decoration: BoxDecoration(border: Border.all()),
+                            child: Text("24h Change"),
+                          ),
+                          Container(
+                            padding: EdgeInsets.all(8.0),
+                            width: 100,
+                            decoration: BoxDecoration(border: Border.all()),
+                            child: Text("7d Change"),
+                          ),
+                          Container(
+                            alignment: Alignment.centerRight,
+                            padding: EdgeInsets.all(8.0),
+                            width: 150,
+                            decoration: BoxDecoration(border: Border.all()),
+                            child: Text("24h Volume"),
+                          ),
+                          Container(
+                            alignment: Alignment.centerRight,
+                            padding: EdgeInsets.all(8.0),
+                            margin: EdgeInsets.only(right: 8.0),
+                            width: 150,
+                            decoration: BoxDecoration(border: Border.all()),
+                            child: Text("Market Cap"),
+                          ),
+                        ],
                       ),
-                      Container(
-                        padding: EdgeInsets.all(8.0),
-                        width: 100,
-                        decoration: BoxDecoration(border: Border.all()),
-                        child: Text("Symbol"),
-                      ),
-                      Container(
-                        alignment: Alignment.centerRight,
-                        padding: EdgeInsets.all(8.0),
-                        width: 150,
-                        decoration: BoxDecoration(border: Border.all()),
-                        child: Text("Current Price"),
-                      ),
-                      Container(
-                        padding: EdgeInsets.all(8.0),
-                        width: 100,
-                        decoration: BoxDecoration(border: Border.all()),
-                        child: Text("1h Change"),
-                      ),
-                      Container(
-                        padding: EdgeInsets.all(8.0),
-                        width: 100,
-                        decoration: BoxDecoration(border: Border.all()),
-                        child: Text("24h Change"),
-                      ),
-                      Container(
-                        padding: EdgeInsets.all(8.0),
-                        width: 100,
-                        decoration: BoxDecoration(border: Border.all()),
-                        child: Text("7d Change"),
-                      ),
-                      Container(
-                        alignment: Alignment.centerRight,
-                        padding: EdgeInsets.all(8.0),
-                        width: 150,
-                        decoration: BoxDecoration(border: Border.all()),
-                        child: Text("24h Volume"),
-                      ),
-                      Container(
-                        alignment: Alignment.centerRight,
-                        padding: EdgeInsets.all(8.0),
-                        margin: EdgeInsets.only(right: 8.0),
-                        width: 150,
-                        decoration: BoxDecoration(border: Border.all()),
-                        child: Text("Market Cap"),
+                      Expanded(
+                        child: Scrollbar(
+                          controller: _controller,
+                          thumbVisibility: true,
+                          trackVisibility: true,
+                          child: ListView.builder(
+                            controller: _controller,
+                            itemCount: priceList.length + 1,
+                            itemBuilder: (context, index) {
+                              if (index == priceList.length) {
+                                ref
+                                    .read(priceListProvider.notifier)
+                                    .loadMoreList();
+                                return Center(
+                                  child: CircularProgressIndicator(),
+                                );
+                              }
+                              PriceModel priceModel = priceList[index];
+                              return PriceItemsWebWidget(
+                                priceModel: priceModel,
+                              );
+                            },
+                          ),
+                        ),
                       ),
                     ],
                   ),
-                  Expanded(
-                    child: Scrollbar(
-                      controller: _controller,
-                      thumbVisibility: true,
-                      trackVisibility: true,
-                      child: ListView.builder(
-                        controller: _controller,
-                        itemCount: priceList.length + 1,
-                        itemBuilder: (context, index) {
-                          if (index == priceList.length) {
-                            ref.read(priceListProvider.notifier).loadMoreList();
-                            return Center(child: CircularProgressIndicator());
-                          }
-                          PriceModel priceModel = priceList[index];
-                          return PriceItemsWebWidget(priceModel: priceModel);
-                        },
-                      ),
-                    ),
-                  ),
-                ],
+                ),
               ),
             ),
         ],

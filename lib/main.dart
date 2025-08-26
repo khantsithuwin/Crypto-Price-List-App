@@ -1,6 +1,6 @@
-import 'package:crypto_price_list/pages/home_page.dart';
-import 'package:crypto_price_list/pages/price_list_detail_page.dart';
-import 'package:crypto_price_list/pages/price_list_page.dart';
+import 'dart:ui';
+
+import 'package:crypto_price_list/const/const_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_web_plugins/flutter_web_plugins.dart';
@@ -18,77 +18,15 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
-      debugShowCheckedModeBanner: false,
-      routerConfig: GoRouter(
-        routes: [
-          GoRoute(
-            name: "home",
-            path: "/",
-            builder: (context, state) {
-              return HomePage();
-            },
-          ),
-          GoRoute(
-            name: "list",
-            path: "/list",
-            builder: (context, state) {
-              return PriceListPage();
-            },
-          ),
-          GoRoute(
-            name: "details",
-            path: "/details",
-            builder: (context, state) {
-              String? symbol = state.uri.queryParameters['symbol'];
-              String? name = state.uri.queryParameters['name'];
-              if (symbol != null && name != null) {
-                return PriceListDetailPage(symbol: symbol, name: name);
-              } else {
-                return SizedBox.shrink();
-              }
-            },
-          ),
-          GoRoute(
-            name: "favourite",
-            path: "/favourite",
-            builder: (context, state) {
-              String? symbol = state.uri.queryParameters['symbol'];
-              String? name = state.uri.queryParameters['name'];
-              if (symbol != null && name != null) {
-                return PriceListDetailPage(symbol: symbol, name: name);
-              } else {
-                return SizedBox.shrink();
-              }
-            },
-          ),
-          GoRoute(
-            name: "news",
-            path: "/news",
-            builder: (context, state) {
-              String? symbol = state.uri.queryParameters['symbol'];
-              String? name = state.uri.queryParameters['name'];
-              if (symbol != null && name != null) {
-                return PriceListDetailPage(symbol: symbol, name: name);
-              } else {
-                return SizedBox.shrink();
-              }
-            },
-          ),
-          GoRoute(
-            name: "setting",
-            path: "/setting",
-            builder: (context, state) {
-              String? symbol = state.uri.queryParameters['symbol'];
-              String? name = state.uri.queryParameters['name'];
-              if (symbol != null && name != null) {
-                return PriceListDetailPage(symbol: symbol, name: name);
-              } else {
-                return SizedBox.shrink();
-              }
-            },
-          ),
-        ],
+      scrollBehavior: ScrollBehavior().copyWith(
+        dragDevices: {
+          PointerDeviceKind.mouse,
+          PointerDeviceKind.touch,
+          PointerDeviceKind.trackpad,
+        },
       ),
+      debugShowCheckedModeBanner: false,
+      routerConfig: route,
     );
   }
 }
