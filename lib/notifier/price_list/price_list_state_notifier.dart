@@ -1,13 +1,16 @@
 import 'package:crypto_price_list/data/services/price_api_service.dart';
 import 'package:crypto_price_list/notifier/price_list/price_list_state_model.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:get_it/get_it.dart';
 
+import '../../const/favourite_utils.dart';
 import '../../data/models/price_model.dart';
 
 typedef PriceListProvider =
     NotifierProvider<PriceListStateNotifier, PriceListStateModel>;
 
 class PriceListStateNotifier extends Notifier<PriceListStateModel> {
+  FavouriteUtils favouriteUtils = GetIt.instance.get<FavouriteUtils>();
   final PriceApiServices _apiServices = PriceApiServices();
   int _page = 1;
   String? _order;
@@ -30,6 +33,39 @@ class PriceListStateNotifier extends Notifier<PriceListStateModel> {
       state = state.copyWith(
         loading: false,
         success: false,
+        errorMessage: e.toString(),
+      );
+    }
+  }
+
+  void getFavouriteList() async {
+    try {
+      state = state.copyWith(loading: true, success: false, errorMessage: '');
+      List<String> fav = favouriteUtils.getFavourite();
+      if (fav.isNotEmpty) {
+        List<PriceModel> favList = await _apiServices.getPriceList(
+          page: 1,
+          perPage: fav.length,
+          ids: fav,
+        );
+        state = state.copyWith(
+          favList: favList,
+          success: true,
+          loading: false,
+          errorMessage: '',
+        );
+      } else {
+        state = state.copyWith(
+          favList: [],
+          success: true,
+          loading: false,
+          errorMessage: '',
+        );
+      }
+    } catch (e) {
+      state = state.copyWith(
+        success: false,
+        loading: false,
         errorMessage: e.toString(),
       );
     }

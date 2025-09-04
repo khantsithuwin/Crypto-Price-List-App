@@ -1,17 +1,31 @@
 import 'package:crypto_price_list/pages/price_list_page.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
 
-class HomePage extends StatefulWidget {
+import '../notifier/price_list/price_list_state_notifier.dart';
+
+class HomePage extends ConsumerStatefulWidget {
   const HomePage({super.key, required this.shell});
 
   final StatefulNavigationShell shell;
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  ConsumerState<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomePageState extends ConsumerState<HomePage> {
+  final priceListProvider = PriceListProvider(() => PriceListStateNotifier());
+
+  @override
+  void initState() {
+    super.initState();
+    if (!GetIt.I.isRegistered<PriceListProvider>()) {
+      GetIt.I.registerSingleton<PriceListProvider>(priceListProvider);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     StatefulNavigationShell shell = widget.shell;
@@ -26,6 +40,9 @@ class _HomePageState extends State<HomePage> {
               child: TabBar(
                 onTap: (index) {
                   shell.goBranch(index);
+                  if (index == 1) {
+                    ref.read(priceListProvider.notifier).getFavouriteList();
+                  }
                 },
                 tabs: [
                   Tab(icon: Icon(Icons.home), text: "Home"),
@@ -43,6 +60,9 @@ class _HomePageState extends State<HomePage> {
               selectedIndex: shell.currentIndex,
               onDestinationSelected: (index) {
                 shell.goBranch(index);
+                if (index == 1) {
+                  ref.read(priceListProvider.notifier).getFavouriteList();
+                }
               },
               destinations: [
                 NavigationDestination(icon: Icon(Icons.home), label: "Home"),

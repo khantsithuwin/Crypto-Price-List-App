@@ -5,9 +5,11 @@ class PriceListStateModel {
   final bool success;
   final String errorMessage;
   final List<PriceModel> priceList;
+  final List<PriceModel> favList;
 
   PriceListStateModel({
     this.priceList = const [],
+    this.favList = const [],
     this.loading = true,
     this.success = false,
     this.errorMessage = '',
@@ -15,12 +17,14 @@ class PriceListStateModel {
 
   PriceListStateModel copyWith({
     List<PriceModel>? priceList,
+    List<PriceModel>? favList,
     bool? loading,
     bool? success,
     String? errorMessage,
   }) {
     return PriceListStateModel(
       priceList: priceList ?? this.priceList,
+      favList: favList ?? this.favList,
       loading: loading ?? this.loading,
       success: success ?? this.success,
       errorMessage: errorMessage ?? this.errorMessage,

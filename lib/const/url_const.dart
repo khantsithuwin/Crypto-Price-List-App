@@ -1,5 +1,6 @@
 class UrlConst {
   static const baseUrl = "https://api.coingecko.com/api/v3/coins/";
+  static const newsUrl = "https://newsapi.org/v2/";
   static const list = "markets";
   static const chartLink =
       'https://www.tradingview.com/widgetembed/?symbol=COINBASE:';
