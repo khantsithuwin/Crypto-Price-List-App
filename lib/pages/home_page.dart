@@ -1,3 +1,4 @@
+import 'package:crypto_price_list/notifier/price_detail/price_detail_notifier.dart';
 import 'package:crypto_price_list/pages/price_list_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -17,12 +18,16 @@ class HomePage extends ConsumerStatefulWidget {
 
 class _HomePageState extends ConsumerState<HomePage> {
   final priceListProvider = PriceListProvider(() => PriceListStateNotifier());
+  final priceDetailProvider = PriceDetailProvider(() => PriceDetailNotifier());
 
   @override
   void initState() {
     super.initState();
     if (!GetIt.I.isRegistered<PriceListProvider>()) {
       GetIt.I.registerSingleton<PriceListProvider>(priceListProvider);
+    }
+    if (!GetIt.I.isRegistered<PriceDetailProvider>()) {
+      GetIt.I.registerSingleton<PriceDetailProvider>(priceDetailProvider);
     }
   }
 
@@ -40,9 +45,6 @@ class _HomePageState extends ConsumerState<HomePage> {
               child: TabBar(
                 onTap: (index) {
                   shell.goBranch(index);
-                  if (index == 1) {
-                    ref.read(priceListProvider.notifier).getFavouriteList();
-                  }
                 },
                 tabs: [
                   Tab(icon: Icon(Icons.home), text: "Home"),
@@ -60,9 +62,6 @@ class _HomePageState extends ConsumerState<HomePage> {
               selectedIndex: shell.currentIndex,
               onDestinationSelected: (index) {
                 shell.goBranch(index);
-                if (index == 1) {
-                  ref.read(priceListProvider.notifier).getFavouriteList();
-                }
               },
               destinations: [
                 NavigationDestination(icon: Icon(Icons.home), label: "Home"),
