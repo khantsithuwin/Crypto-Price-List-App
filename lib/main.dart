@@ -4,12 +4,12 @@ import 'package:crypto_price_list/const/const_route.dart';
 import 'package:crypto_price_list/di/locators.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_web_plugins/flutter_web_plugins.dart';
+
 import 'package:go_router/go_router.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  usePathUrlStrategy();
+  
   GoRouter.optionURLReflectsImperativeAPIs = true;
   await setupLocator();
   runApp(ProviderScope(child: const MyApp()));

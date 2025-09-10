@@ -1,10 +1,12 @@
 import 'package:crypto_price_list/const/url_const.dart';
 import 'package:crypto_price_list/notifier/price_detail/price_detail_notifier.dart';
 import 'package:crypto_price_list/notifier/price_detail/price_detail_state_model.dart';
-import 'package:crypto_price_list/widgets/ifram_viewer/iframe_view_common.dart';
+
 import 'package:crypto_price_list/widgets/price_detail_items.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import '../widgets/ifram_viewer/iframe_view_common.dart';
 
 class PriceListDetailPage extends ConsumerStatefulWidget {
   const PriceListDetailPage({
