@@ -20,6 +20,6 @@ Future<void> setupLocator() async {
   newsDio.interceptors.add(PrettyDioLogger());
   getIt.registerSingleton<Dio>(newsDio, instanceName: "news");
   //FavouriteUtils
-  FavouriteUtils favouriteUtils = FavouriteUtils();
-  getIt.registerSingleton<FavouriteUtils>(favouriteUtils);
+  SharedPrefsUtils favouriteUtils = SharedPrefsUtils();
+  getIt.registerSingleton<SharedPrefsUtils>(favouriteUtils);
 }

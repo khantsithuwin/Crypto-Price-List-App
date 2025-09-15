@@ -11,7 +11,7 @@ typedef PriceDetailProvider =
 
 class PriceDetailNotifier extends AutoDisposeNotifier<PriceDetailStateModel> {
   final WssDetailService _service = WssDetailService();
-  FavouriteUtils favouriteUtils = GetIt.instance.get<FavouriteUtils>();
+  SharedPrefsUtils favouriteUtils = GetIt.instance.get<SharedPrefsUtils>();
 
   @override
   PriceDetailStateModel build() {
@@ -20,6 +20,10 @@ class PriceDetailNotifier extends AutoDisposeNotifier<PriceDetailStateModel> {
       _dispose();
     });
     return PriceDetailStateModel();
+  }
+
+  void clearFavourites() {
+    favouriteUtils.clearFavourites();
   }
 
   void saveFavourite(String name) {
